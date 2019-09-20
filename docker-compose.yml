@@ -1,0 +1,16 @@
+version: "2"
+
+services:
+  web:
+    container_name: php_store
+    ports:
+      - "8080:80"
+    build:
+      context: .
+    volumes:
+      - ./php/:/php-code/
+  redis:
+    image: redis:alpine
+    container_name: redis
+    volumes:
+      - ./redis/:/data

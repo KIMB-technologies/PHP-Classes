@@ -1,0 +1,14 @@
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t php_datastore .
+      - docker images
+      - docker tag php_datastore kimbtechnologies/php_datastore:$TRAVIS_COMMIT
+      - docker tag php_datastore kimbtechnologies/php_datastore:latest
+      - docker push kimbtechnologies/php_datastore:$TRAVIS_COMMIT
+      - docker push kimbtechnologies/php_datastore:latest
