@@ -12,7 +12,7 @@
 /**
  * Diese Klasse stellt den Zugriff auf JSON-Dateien des Systems bereit
  */
-class JSONReader {
+class JSONReader extends Reader {
 
 	//Pfad unter dem alle Dateien liegen
 	//	können auch Unterordner sein!
