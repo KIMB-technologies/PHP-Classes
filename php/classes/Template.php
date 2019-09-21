@@ -58,7 +58,7 @@ class Template{
 	 * 		./templates/<name>_<lang>.html
 	 */
 	public function __construct( $name ){
-		if( Helper::checkFileName( $name ) ) {
+		if( Utilities::checkFileName( $name ) ) {
 			$this->filename = $name;
 			if( !is_file( __DIR__ . '/templates/' . $this->filename .  '_' . self::$lang . '.html' ) ){
 				throw new Exception('Kann Template nicht finden!');
