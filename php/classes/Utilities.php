@@ -11,6 +11,9 @@ defined('KIMB-Classes') or die('Invalid Endpoint');
  * https://opensource.org/licenses/MIT
  */
 
+/**
+ * Class with useful functions.
+ */
 class Utilities {
 
 	/**

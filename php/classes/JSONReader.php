@@ -20,7 +20,7 @@ class JSONReader extends Reader {
 	 * Deletes a JSON file. (needs exclusive rights)
 	 */
 	public static function deleteFile( string $name ) : bool{
-		$file = self::$path . $name . '.json';
+		$file = parent::$path . $name . '.json';
 		if( !is_file( $file ) && !is_file( $file . '.lock' ) ){
 			return true;
 		}
@@ -38,17 +38,17 @@ class JSONReader extends Reader {
 
 	/**
 	 * Creates a JSON Reader, opens and imports file if files exists.
-	 * else creates a new file. Opens self::$path/$filename, $filename
-	 * contain a folder and a file (self::$path/myfolder/myfile).
+	 * else creates a new file. Opens parent::$path/$filename, $filename
+	 * contain a folder and a file (parent::$path/myfolder/myfile).
 	 * Then myfolder has to be created before!
 	 * 
 	 * @param $filename the filename, without .json 
 	 * @param $lockex lock the file exclusive, if yo
-	 * @param $otherpath use another path than self::$path 
+	 * @param $otherpath use another path than parent::$path 
 	 */
 	public function __construct( $filename, $lockex = false, $otherpath = ''){
 		//create filename
-		$this->filepath = (empty($otherpath) ? self::$path : $otherpath . '/' ). $filename . '.json';
+		$this->filepath = (empty($otherpath) ? parent::$path : $otherpath . '/' ). $filename . '.json';
 		
 		$isfile = is_file( $this->filepath );
 
@@ -234,10 +234,11 @@ class JSONReader extends Reader {
 	//Einen Wert in das Array schreiben (neu oder dazu)
 	//	$index => array() der Indexe, wenn der letze Wert 'null' ist, wir $value angefügt
 	//	$value => Neuer Wert (einfach 'null' um Wert zu löschen, Indexe bleiben erhalten)
-	public function setValue( $index, $value ){
+	public function setValue( array $index, $value ) : bool {
 		//schreibbar?
 		if( $this->writeable ){
 			$this->data = $this->setValueHelper( $index, $value, $this->data );
+			return true;
 		}
 		else{
 			return false;

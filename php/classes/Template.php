@@ -67,7 +67,7 @@ class Template{
 	 * 		./templates/<name>.json)
 	 * 		./templates/<name>_<lang>.html
 	 */
-	public function __construct( $name ){
+	public function __construct( string $name ){
 		if( Utilities::checkFileName( $name ) ) {
 			$this->filename = $name;
 			if( !is_file( __DIR__ . '/templates/' . $this->filename .  '_' . self::$lang . '.html' ) ){
@@ -100,7 +100,7 @@ class Template{
 	 * 		//...
 	 * 	)
 	 */
-	public function setMultipleContent($name, $content) : bool {
+	public function setMultipleContent(string $name, array $content) : bool {
 		if( isset( $this->multiples[$name] ) ){
 			$mults = array();
 			foreach( $content as $data){
@@ -145,11 +145,8 @@ class Template{
 	 * @param $template the template object to include
 	 */
 	public function includeTemplate( Template $template ) : bool {
-		if( get_class( $template ) === 'Template' ){
-			$this->inner = $template;
-			return true;
-		}
-		return false;
+		$this->inner = $template;
+		return true;
 	}
 
 	/**
@@ -212,7 +209,7 @@ class Template{
 	 * Output the page using this template.
 	 * ends the script!
 	 */
-	public function output(){
+	public function output() : void {
 		if( !headers_sent() ){
 			header( 'Content-type:text/html; charset=utf-8' );
 		}

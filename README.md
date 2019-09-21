@@ -2,7 +2,7 @@
 
 Some useful PHP Classes written and used by KIMB-technologies.
 
-> This repo is under development, the RedisCache class is new, the other ones are older.
+> Also see the [PHP-Doc](https://kimb-technologies.github.io/PHP-Classes/index.html)!
 
 ## JSONReader
 A JSON based data storage class. Store strings, integers, booleans and arrays in a JSON file.
@@ -14,12 +14,18 @@ and multiple folders.
 - Search values
 - Check values
 
+[&rarr; Example Code](https://github.com/KIMB-technologies/PHP-Classes/blob/master/php/json_ex.php)
+
 ## RedisCache
 A Redis Cache abstraction class for PECL redis. Open a dataset containing 
 values, lists and maps of values. Set the expire time for values.
 
 - Load data from a JSONReader object
 - Get a cached value and provide a callback to fetch it, if expired.
+
+> This class is under development.
+
+[&rarr; Example Code](https://github.com/KIMB-technologies/PHP-Classes/blob/master/php/redis_ex.php)
 
 ## Utilities
 Some static helper functions.
@@ -38,4 +44,4 @@ The PHP class will load the template and is able to fill the placeholdes with gi
 - Multiple placeholders, a part of the template is multiplied for an array of values
 - A template consists of the HTML files for each language and a JSON listing all placeholders
 
-
+[&rarr; Example Code](https://github.com/KIMB-technologies/PHP-Classes/blob/master/php/template_ex.php)

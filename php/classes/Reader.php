@@ -27,7 +27,7 @@ abstract class Reader {
 	/**
 	 * Path where the JSON files are located, in redis used as key prefix
 	 */
-	private static $path = __DIR__.'/';
+	protected static $path = __DIR__.'/';
 	
 	/**
 	 * Changes the data path, the path on filesystem
@@ -105,7 +105,7 @@ abstract class Reader {
 	 * @param $index array of indexes, the index
 	 * @param $value the value to set
 	 */
-	abstract public function setValue( array $index, $value ) : void;
+	abstract public function setValue( array $index, $value ) : bool;
 }
 
 ?>
