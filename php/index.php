@@ -1,8 +1,19 @@
 <?php
 header('Content-Type: text/plain');
 
-require_once( __DIR__ . '/JSONReader.php' );
+/**
+ * Example load.
+ */
+define('KIMB-Classes', 'ok');
+require_once( __DIR__ . '/classes/autoload.php' );
 
+/**
+ * Example JSON
+ */
+
+ /**
+  * Example Redis Cache
+  */
 $redis = new Redis();
 $redis->connect('redis');
 
@@ -17,4 +28,8 @@ $redis->expire('x', 1);
 print_r([$redis->get('x')]);
 sleep(2);
 print_r([$redis->get('x')]);
+
+/**
+ * Example Template
+ */
 ?>

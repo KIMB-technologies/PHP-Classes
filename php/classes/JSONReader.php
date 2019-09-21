@@ -1,4 +1,6 @@
 <?php
+defined('KIMB-Classes') or die('Invalid Endpoint');
+
 /** 
  * KIMB-technologies
  * https://github.com/KIMB-technologies/
@@ -14,32 +16,10 @@
  */
 class JSONReader extends Reader {
 
-	//Pfad unter dem alle Dateien liegen
-	//	können auch Unterordner sein!
-	private static $path = __DIR__.'/';
-
-	//Den Pfad fuer die json Dateien aendern
-	//	$path => neuer Pfad (vollständig ab /)
-	//	Rückgabe => neuer Pfad, bzw. bei keinem Übergabeparameter aktueller Pfad
-	public static function changepath( $path = '' ){
-		//neuen Pfad uebergeben?
-		if( !empty( $path ) ){
-			//hat neuer Pfad einen abschließend Slash?
-			if( substr( $path , -1 ) != '/' ){
-				//nein, anfügen
-				$path = $path.'/';
-			}
-			//neuen Pfad setzen
-			self::$path = $path;
-		}
-		//Pfad ausgeben (neu oder unverändert)
-		return self::$path;
-	}
-
 	/**
 	 * Deletes a JSON file. (needs exclusive rights)
 	 */
-	public static function deleteFile( $filename ){
+	public static function deleteSet( $filename ){
 		$file = self::$path . $filename . '.json';
 		if( !is_file( $file ) && !is_file( $file . '.lock' ) ){
 			return true;
@@ -174,12 +154,6 @@ class JSONReader extends Reader {
 		else{
 			return false;
 		}
-	}
-
-	//Ausgabe des Arrays
-	public function output(){
-		//raus
-		print_r( $this->data );
 	}
 
 	//Prüfen, ob ein Wert vorhanden
