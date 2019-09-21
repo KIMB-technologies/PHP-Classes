@@ -1,7 +1,8 @@
 language: php
+php:
+  - '5.6'
 
 before_script: curl http://phpdoc.org/phpDocumentor.phar --output ./phpdoc.phar
-
 script: php ./phpdoc.phar -d ./php/classes -t ./docs
 
 deploy:
