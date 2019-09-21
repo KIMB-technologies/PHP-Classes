@@ -1,4 +1,5 @@
 <?php
+defined('KIMB-Classes') or die('Invalid Endpoint');
 
 /** 
  * KIMB-technologies
