@@ -1,6 +1,11 @@
 language: php
 php:
   - '7.1'
+  
+addons:
+  apt:
+    packages:
+      - graphviz
 
 before_script: 
   - curl -L http://phpdoc.org/phpDocumentor.phar --output ./phpdoc.phar
