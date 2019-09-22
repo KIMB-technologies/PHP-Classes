@@ -12,10 +12,11 @@ defined('KIMB-Classes') or die('Invalid Endpoint');
  */
 
 /**
- * A class to cache values using redis,
- * can be used with JSONReader
+ * A class to cache values using redis.
+ * Supporting single values and HashMap based arrays.
+ * Also supporting TimeToLive for all values.
  */
-class RedisCache /*extends Cache*/ {
+class RedisCache {
 
 	/**
 	 * Redis Settings
@@ -66,20 +67,29 @@ class RedisCache /*extends Cache*/ {
 	}
 
 	/**
-	 * Remove the entire storage Group.
+	 * Get an array of all the keys of this group.
+	 * @return The array of keys
 	 */
-	public function removeGroup() : bool {
-		$dels = array();
+	private function getAllKeysOfGroup() : array {
+		$all = array();
 		$lenpref = strlen($this->prefix);
 		$iterator = NULL;
 		do {
 			$keys = $this->redis->scan($iterator);
 			if ($keys !== FALSE) {
-				$dels = array_merge( $dels, array_filter( $keys, function( $k ) use ($lenpref){
+				$all = array_merge( $all, array_filter( $keys, function( $k ) use ($lenpref){
 					return substr($k, 0, $lenpref) == $this->prefix;
 				}));
 			}
 		} while ($iterator > 0);
+		return $all;
+	}
+
+	/**
+	 * Remove the entire storage Group.
+	 */
+	public function removeGroup() : bool {
+		$dels = $this->getAllKeysOfGroup();
 		return $this->redis->unlink($dels) == count($dels);
 	}
 
@@ -120,6 +130,14 @@ class RedisCache /*extends Cache*/ {
 		return $this->redis->exists($this->generateKey($key));
 	}
 
+	/**
+	 * Removes a key.
+	 * @return successful?
+	 */
+	public function remove(string $key) : bool {
+		return $this->redis->del($this->generateKey($key)) == 1;
+	}
+
 	// # # # # #
 	// Key => Array (HashMap)
 	// # # # # #
@@ -133,15 +151,14 @@ class RedisCache /*extends Cache*/ {
 	 * @return successful stored?
 	 */
 	public function arraySet( string $key, array $array, int $ttl = 0 ) : bool {
-		$key = $this->generateKey($key);
-
+		$this->remove( $key );
 		$d = array();
 		foreach( $array as $k => $v ){
 			$d[strval($k)] = json_encode( $v );
 		}
-		$r = $this->redis->hMSet( $key, $d);
+		$r = $this->redis->hMSet( $this->generateKey($key), $d);
 		if( $ttl !== 0){
-			$this->redis->expire($key, $ttl);	
+			$this->redis->expire( $this->generateKey($key), $ttl);	
 		}
 		return $r;
 	}
@@ -181,17 +198,41 @@ class RedisCache /*extends Cache*/ {
 	/**
 	 * Set the value of one key in an array.
 	 * @param $key The key of the array
-	 * @param $arrayKey The key of the value in the array
+	 * @param $arrayKey The key of the value in the array (null to append)
 	 * @param $value The value to store
 	 * @param $ttl The time to live for the entire array (0 => always)
 	 * @return successful stored?
 	 */
-	public function arrayKeySet(string $key, string $arrayKey, $value, int $ttl = 0 ) : bool {
+	public function arrayKeySet(string $key, ?string $arrayKey, $value, int $ttl = 0 ) : bool {
+		if( $arrayKey === null ){
+			$arrayKey = $this->redis->hLen($this->generateKey($key)) + 1;
+		}
 		$r = $this->redis->hSet( $this->generateKey($key), strval($arrayKey), json_encode($value));
 		if( $ttl !== 0){
 			$this->redis->expire($this->generateKey($key), $ttl);	
 		}
 		return $r;
+	}
+
+	/**
+	 * Print all keys and values of this Group.
+	 */
+	public function output(): void {
+		echo '=================================' . PHP_EOL;
+		echo 'Key' . "\t\t : " . 'Value' . PHP_EOL;
+		echo '---------------------------------' . PHP_EOL;
+		$lenpref = strlen($this->prefix);
+		foreach( $this->getAllKeysOfGroup() as $fullkey ){
+			$key = substr($fullkey, $lenpref);
+			if( $this->redis->type($fullkey) !== Redis::REDIS_HASH ){
+				$val = $this->get($key);
+			}
+			else {
+				$val = json_encode($this->arrayGet($key));
+			}
+			echo $key . "\t\t : " . $val . PHP_EOL;
+		}
+		echo '=================================' . PHP_EOL . PHP_EOL;
 	}
 }
 ?>

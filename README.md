@@ -4,6 +4,10 @@ Some useful PHP Classes written and used by KIMB-technologies.
 
 > Also see the [PHP-Doc](https://kimb-technologies.github.io/PHP-Classes/index.html)!
 
+All classes, except for the RedisCache, just need a default PHP installation greater 7.0.
+The redis class uses the PHPRedis from PECL `pecl install redis`.  
+Use the `docker-compose` file, to run the examples, just open `http://localhost:8080/`.
+
 ## JSONReader
 A JSON based data storage class. Store strings, integers, booleans and arrays in a JSON file.
 Supports file locking for thread save reading and writing of files. Support for multiple files
@@ -17,10 +21,8 @@ and multiple folders.
 [&rarr; Example Code](https://github.com/KIMB-technologies/PHP-Classes/blob/master/php/json_ex.php)
 
 ## RedisCache
-A Redis Cache abstraction class for PECL redis. Open a dataset containing 
+A Redis Cache abstraction class for PECL redis. Open a group containing 
 single values and arrays of values. Set the expire time for values.
-
-> This class is under development.
 
 [&rarr; Example Code](https://github.com/KIMB-technologies/PHP-Classes/blob/master/php/redis_ex.php)
 
