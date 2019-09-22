@@ -18,10 +18,7 @@ and multiple folders.
 
 ## RedisCache
 A Redis Cache abstraction class for PECL redis. Open a dataset containing 
-values, lists and maps of values. Set the expire time for values.
-
-- Load data from a JSONReader object
-- Get a cached value and provide a callback to fetch it, if expired.
+single values and arrays of values. Set the expire time for values.
 
 > This class is under development.
 
