@@ -6,7 +6,7 @@ Some useful PHP Classes written and used by KIMB-technologies.
 
 All classes, except for the RedisCache, just need a default PHP installation greater 7.0.
 The redis class uses the PHPRedis from PECL `pecl install redis`.  
-Use the `docker-compose` file, to run the examples, just open `http://localhost:8080/`.
+Use the `docker-compose` file to run the examples, just open `http://localhost:8080/`.
 
 ## JSONReader
 A JSON based data storage class. Store strings, integers, booleans and arrays in a JSON file.
